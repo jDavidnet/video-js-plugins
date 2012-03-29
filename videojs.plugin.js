@@ -1,0 +1,222 @@
+_V_.options.components['logo'] = {};
+_V_.options.components['replayButton'] = {};
+_V_.options.components['socialControlBar'] = {};
+_V_.options.components['overCard'] = {};
+
+
+_V_.Logo = _V_.Component.extend({
+    init: function (player, options){
+        var p = this._super(player, options);
+        
+        return p;
+    },
+    buildCSSClass: function(){
+        return " vjs-logo ";
+    },
+    createElement: function(type, attrs){
+      attrs = _V_.merge({
+          className: this.buildCSSClass()//,
+          //innerHTML:''
+      }, attrs); 
+      
+      return this._super(type, attrs);
+    }
+});
+
+_V_.ReplayButton = _V_.Button.extend({
+    init: function (player, options){
+        var p = this._super(player, options);
+        
+        this.player.addEvent("ended", this.proxy(this.onEnded));
+        
+        this.player.addEvent("play", this.proxy(this.onPlayState));
+        this.player.addEvent("pause", this.proxy(this.onPlayState));
+        this.player.controlBar.addEvent("mouseup", this.proxy(this.onPlayState));
+    },
+    buildCSSClass: function(){
+        //return this._super() + " vjs-social-button ";
+        return " vjs-replay-button  vjs-fade-out ";
+    },
+    createElement: function(type, attrs){
+      attrs = _V_.merge({
+          className: this.buildCSSClass(),
+          innerHTML:'<div class="vjs-replay-icon"></div><div class="vjs-replay-text">%1</div>'.replace('%1', 'replay')
+      }, attrs); 
+      
+      return this._super(type, attrs);
+    },
+    onEnded: function(){
+        this.fadeIn();  
+    },
+    onPlayState: function(){
+        this.fadeOut();
+    },
+    onClick: function(){
+        this.player.pause();
+        this.player.currentTime(0);
+        this.player.play()
+    }
+});
+
+_V_.SocialControlBar = _V_.Control.extend({
+    options: {
+        components: {
+            "facebookButton": {},
+            "twitterButton": {},
+            "pinterestButton": {},
+            "gPlusButton": {}
+        }
+    },
+    init: function (player, options){
+        var p = this._super(player, options);
+        //console.log('init', this, p);
+        
+        this.player.addEvent("mouseover", this.proxy(this.fadeIn));
+        this.player.addEvent("mouseout", this.proxy(this.fadeOut));
+    },
+    buildCSSClass: function(){
+        //return this._super() + " vjs-social-controlBar ";
+        return " vjs-social-controlBar ";
+    },
+    createElement: function(type, attrs){
+      attrs = _V_.merge({
+          className: this.buildCSSClass(),
+          innerHTML:''
+      }, attrs); 
+      
+      return this._super(type, attrs);
+    }
+});
+
+_V_.SocialButton = _V_.Button.extend({
+    init: function (player, options){
+        var p = this._super(player, options);
+    },
+    buildCSSClass: function(){
+        //return this._super() + " vjs-social-button ";
+        return " vjs-social-button ";
+    },
+    createElement: function(type, attrs){
+      attrs = _V_.merge({
+          className: this.buildCSSClass(),
+          innerHTML: ''
+      }, attrs); 
+      
+      return this._super(type, attrs);
+    }
+});
+
+_V_.FacebookButton = _V_.SocialButton.extend({
+    init: function (player, options){
+        var p = this._super(player, options);
+    },
+    buildCSSClass: function(){
+        return this._super() + " vjs-FB-button ";
+    },
+    onClick: function(){
+        var options = this.player.options || {};
+        if(FB && FB.ui){
+           FB.ui({ "method": "feed", "link": options.video_url }); return false;
+        }
+               
+        var api = 'https://www.facebook.com/sharer.php?';
+        var params = [
+            ['u', options.video_url].join('=')
+            //['title', options.video_title].join('=')
+        ].join('&');
+        
+        var wparams = [
+            ['resizable','1'].join('='),
+            ['location','1'].join('='),
+            ['width','550'].join('='),
+            ['height','400'].join('=')
+        ].join();
+        //console.log('wparams',wparams, this, this.options, arguments);
+        var popup = window.open(api + params, 'twitter', wparams);
+        if(popup.focus){popup.focus()}
+    }
+});
+
+_V_.TwitterButton = _V_.SocialButton.extend({
+    init: function (player, options){
+        var p = this._super(player, options);
+    },
+    buildCSSClass: function(){
+        return this._super() + " vjs-TW-button ";
+    },
+    onClick: function(){
+        var options = this.player.options || {};
+        var api = 'http://twitter.com/share?';
+        var params = [
+            ['url', options.video_url].join('='),
+            ['counturl', options.video_url].join('='),
+            ['hashtags', options.video_tags].join('='),
+            ['text', options.video_message].join('=')
+        ].join('&');
+        
+        var wparams = [
+            ['resizable','1'].join('='),
+            ['location','1'].join('='),
+            ['width','550'].join('='),
+            ['height','400'].join('=')
+        ].join();
+        //console.log('wparams',wparams, this, this.options, arguments);
+        var popup = window.open(api + params, 'twitter', wparams);
+        if(popup.focus){popup.focus()}
+    }
+});
+
+_V_.PinterestButton = _V_.SocialButton.extend({
+    init: function (player, options){
+        var p = this._super(player, options);
+    },
+    buildCSSClass: function(){
+        return this._super() + " vjs-PIN-button ";
+    },
+    onClick: function(){
+        var options = this.player.options || {};
+        var api = 'http://pinterest.com/pin/create/button/?';
+        var params = [
+            ['url', options.video_url].join('='),
+            ['media', options.poster ].join('='),
+            ['description', options.video_description ].join('=')
+        ].join('&');
+        
+        var wparams = [
+            ['resizable','1'].join('='),
+            ['location','1'].join('='),
+            ['width','600'].join('='),
+            ['height','350'].join('=')
+        ].join();
+        //console.log('wparams',wparams);
+        var popup = window.open(api + params, 'pinterest', wparams);
+        if(popup.focus){popup.focus()}
+    }
+});
+
+_V_.GPlusButton = _V_.SocialButton.extend({
+    init: function (player, options){
+        var p = this._super(player, options);
+    },
+    buildCSSClass: function(){
+        return this._super() + " vjs-GP-button ";
+    },
+    onClick: function(){
+        var options = this.player.options || {};
+        var api = 'https://plusone.google.com/_/+1/confirm?';
+        var params = [
+            ['hl','en'].join('='),
+            ['url', options.video_url ].join('=')
+        ].join('&');
+        
+        var wparams = [
+            ['resizable','1'].join('='),
+            ['location','1'].join('='),
+            ['width','550'].join('='),
+            ['height','550'].join('=')
+        ].join();
+        //console.log('wparams',wparams);
+        var popup = window.open(api + params, 'google', wparams);
+        if(popup.focus){popup.focus()}
+    }
+});

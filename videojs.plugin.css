@@ -1,0 +1,133 @@
+/*reset*/
+    .vjs-social-controlBar.vjs-control,
+    .vjs-social-controlBar .vjs-control{
+        
+    }
+    
+    .video-js{
+        width: 100%;
+        height: 100%;
+    }
+    .video-js .vjs-poster{
+        max-height: none !important;
+        height: 100% !important;
+        background: #000 url(loading) center center no-repeat;
+        background-size: contain;
+        
+    }
+    
+    
+    .vjs-replay-button{
+        cursor: pointer;
+        
+        position: absolute;
+        top:0;
+        left:0px;
+        width:150px;
+        color: white;
+        opacity: .5;
+        
+        -webkit-transition: all .5s !important;
+    }
+    
+    .vjs-replay-icon{
+        background: url('/v3/images/player_icons.gif') no-repeat -10px -10px;
+        width: 32px;
+        height: 32px;
+        background-size: 200px 48px;
+        float:left;
+    }
+    
+    .vjs-replay-text{
+        float:left;
+        height: 32px;
+        line-height: 28px;
+        vertical-align: middle;
+        font-size: 16px;
+    }
+    
+    .vjs-logo {
+        position: absolute;
+        top:0;
+        right: 0;
+        width: 80px;
+        height: 40px;
+        
+        opacity:.5;
+        
+        background: url('http://www.twitvid.com.edgesuite.net/v3/images/logo_style_2.png') no-repeat top right;
+    }
+    
+    .vjs-big-play-button,
+    .vjs-replay-button,
+    .vjs-social-controlBar,
+    .vjs-controls
+    {
+        z-index: 3;
+    }
+    
+    .vjs-social-controlBar{
+        position: absolute !important;
+        top:40px;
+        right:0;    
+       
+        border-radius: 3px 0px 0px 3px;
+        background: #333;
+        background-color: rgba(0,0,0,.5);
+        -webkit-transition: all .5s !important;
+    }
+    
+    .vjs-social-controlBar .background{
+        position:absolute !important;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        
+        background: grey;
+        opacity:.5;
+        
+        z-index: 0;
+    }
+    
+    .vjs-social-button{
+        cursor: pointer;
+        
+        height: 32px;
+        width: 32px;
+        
+        margin: 12px 10px;
+        /* border-radius: 3px; */
+        
+        color:white;
+        font-weight: bolder;
+        text-align: center;
+        font-size: 16px;
+        
+        opacity:0.5;
+        -webkit-transition: all .2s;
+        
+        z-index: 10;
+    }
+    
+    .vjs-social-button:hover{
+        /* box-shadow: 0px 0px 5px 2px darkgrey;*/
+        opacity: 1;
+    }
+    
+    .vjs-FB-button{
+        background: url(/v3/images/icons-socialmedia/facebook.png);
+    }
+    
+    .vjs-TW-button{
+        background: url(/v3/images/icons-socialmedia/twitter.png);
+    }
+    
+    .vjs-PIN-button{
+        background: url(/v3/images/icons-socialmedia/pinterest.png);
+    }
+    
+    .vjs-GP-button{
+        background: url(/v3/images/icons-socialmedia/googleplus.png);
+        /*background: url(//ssl.gstatic.com/images/icons/gplus-32.png);*/
+    }
