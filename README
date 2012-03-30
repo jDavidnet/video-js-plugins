@@ -4,10 +4,10 @@ After talking to Steve of the Video-JS project I choose to show
 off a few examples of how you can extend Video-JS.  There are two
 basic plugins included.
 
-<ul>
-<li>add a replay at the end of play</li>
-<li>social media buttons to post video to your favorite social media network</li>
-</ul>
+
+* add a replay at the end of play
+* social media buttons to post video to your favorite social media network
+
 
 You may need to modify the code a bit to work for your
 purposes, but it should be far enough along that it helps
