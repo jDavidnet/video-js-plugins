@@ -1,3 +1,19 @@
+I have been working on extending the functionality of Video-JS.
+
+After talking to Steve of the Video-JS project I choose to show
+off a few examples of how you can extend Video-JS.  There are two
+basic plugins included.
+
+<ul>
+<li>add a replay at the end of play</li>
+<li>social media buttons to post video to your favorite social media network</li>
+</ul>
+
+You may need to modify the code a bit to work for your
+purposes, but it should be far enough along that it helps
+you get started.  If people take an interest I will continue
+to update it.
+
 This is a very basic commit, you will need to modify the 
 images referenced in the css.  I wasn't sure of the rights 
 with the ones I am using.  They were listed as free to use, 
