@@ -220,3 +220,58 @@ _V_.GPlusButton = _V_.SocialButton.extend({
         if(popup.focus){popup.focus()}
     }
 });
+
+_V_.options.components['rotateButton'] = {};
+_V_.RotateButton = _V_.Button.extend({
+    init: function (player, options){
+        var p = this._super(player, options);
+        
+        this.player.addEvent("mouseover", this.proxy(this.fadeIn));
+        this.player.addEvent("mouseout", this.proxy(this.fadeOut));
+    },
+    createElement: function(type, attrs){
+        //if(this.player.techName = 'html5'){
+        if(this.player.tech.el.localName === 'video'){
+                attrs = _V_.merge({
+                className: this.buildCSSClass(),
+                innerHTML:'Rotate'
+            }, attrs); 
+
+            return this._super(type, attrs);
+        }
+        
+        return;
+      
+    },
+    buildCSSClass: function(){
+        return " vjs-rotate-button ";
+    },
+    clickCount: 0,
+    onClick: function(){
+        console.log('rotate', this.player, this.player.techName, this.player.tech.el.localName, this.player.tech.el);
+        
+        //if(this.player.techName === "html5" ){
+        if(this.player.tech.el.localName === 'video'){
+            var tech = this.player.tech.el;
+            var poster = this.player.poster.el;
+            var deg = ((this.clickCount) + 1) * 90;
+            
+            this.player.el.style.overflow = 'hidden';
+        
+            tech.style.webkitTransform = 'rotate('+deg+'deg)';
+            tech.style.MozTransform = 'rotate('+deg+'deg)';
+            tech.style.msTransform = 'rotate('+deg+'deg)';
+            tech.style.OTransform = 'rotate('+deg+'deg)';
+            tech.style.transform = 'rotate('+deg+'deg)';
+
+            poster.style.webkitTransform = 'rotate('+deg+'deg)';
+            poster.style.MozTransform = 'rotate('+deg+'deg)';
+            poster.style.msTransform = 'rotate('+deg+'deg)';
+            poster.style.OTransform = 'rotate('+deg+'deg)';
+            poster.style.transform = 'rotate('+deg+'deg)';
+
+            this.clickCount += 1;
+        }
+        
+    }
+});
