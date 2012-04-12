@@ -1,14 +1,18 @@
-_V_.options.components['logo'] = {};
+//sets the ability to scrub to a new point in the video
+//and fetch from that timestamp with limelight,
+//by appending &ms={timestamp} to the request url.
+_V_.options.flash.flashVars = _V_.options.flash.flashVars || {};
+_V_.options.flash.flashVars['allowPartial'] = true;
+
+_V_.options.components['logo'] = {}; 
 _V_.options.components['replayButton'] = {};
 _V_.options.components['socialControlBar'] = {};
-_V_.options.components['overCard'] = {};
+_V_.options.components['rotateButton'] = {};
 
 
 _V_.Logo = _V_.Component.extend({
     init: function (player, options){
         var p = this._super(player, options);
-        
-        return p;
     },
     buildCSSClass: function(){
         return " vjs-logo ";
@@ -114,14 +118,15 @@ _V_.FacebookButton = _V_.SocialButton.extend({
         return this._super() + " vjs-FB-button ";
     },
     onClick: function(){
-        var options = this.player.options || {};
-        if(FB && FB.ui){
+        var options = this.player.options || {}, FB = FB || null;
+        
+        if(!!FB && !!FB.ui){
            FB.ui({ "method": "feed", "link": options.video_url }); return false;
         }
                
         var api = 'https://www.facebook.com/sharer.php?';
         var params = [
-            ['u', options.video_url].join('=')
+            ['u', encodeURIComponent(options.video_url)].join('=')
             //['title', options.video_title].join('=')
         ].join('&');
         
@@ -131,8 +136,10 @@ _V_.FacebookButton = _V_.SocialButton.extend({
             ['width','550'].join('='),
             ['height','400'].join('=')
         ].join();
-        //console.log('wparams',wparams, this, this.options, arguments);
-        var popup = window.open(api + params, 'twitter', wparams);
+        
+       //console.log('wparams',wparams, api + params, this, this.options, arguments);
+        
+        var popup = window.open(api + params, 'facebook', wparams);
         if(popup.focus){popup.focus()}
     }
 });
@@ -148,8 +155,8 @@ _V_.TwitterButton = _V_.SocialButton.extend({
         var options = this.player.options || {};
         var api = 'http://twitter.com/share?';
         var params = [
-            ['url', options.video_url].join('='),
-            ['counturl', options.video_url].join('='),
+            ['url', encodeURIComponent(options.video_url)].join('='),
+            ['counturl', encodeURIComponent(options.video_url)].join('='),
             ['hashtags', options.video_tags].join('='),
             ['text', options.video_message].join('=')
         ].join('&');
@@ -160,7 +167,8 @@ _V_.TwitterButton = _V_.SocialButton.extend({
             ['width','550'].join('='),
             ['height','400'].join('=')
         ].join();
-        //console.log('wparams',wparams, this, this.options, arguments);
+        
+       //console.log('wparams',wparams, api + params, this, this.options, arguments);
         var popup = window.open(api + params, 'twitter', wparams);
         if(popup.focus){popup.focus()}
     }
@@ -177,7 +185,7 @@ _V_.PinterestButton = _V_.SocialButton.extend({
         var options = this.player.options || {};
         var api = 'http://pinterest.com/pin/create/button/?';
         var params = [
-            ['url', options.video_url].join('='),
+            ['url', encodeURIComponent(options.video_url)].join('='),
             ['media', options.poster ].join('='),
             ['description', options.video_description ].join('=')
         ].join('&');
@@ -188,7 +196,8 @@ _V_.PinterestButton = _V_.SocialButton.extend({
             ['width','600'].join('='),
             ['height','350'].join('=')
         ].join();
-        //console.log('wparams',wparams);
+        
+       //console.log('wparams',wparams, api + params);
         var popup = window.open(api + params, 'pinterest', wparams);
         if(popup.focus){popup.focus()}
     }
@@ -206,7 +215,7 @@ _V_.GPlusButton = _V_.SocialButton.extend({
         var api = 'https://plusone.google.com/_/+1/confirm?';
         var params = [
             ['hl','en'].join('='),
-            ['url', options.video_url ].join('=')
+            ['url',  encodeURIComponent(options.video_url) ].join('=')
         ].join('&');
         
         var wparams = [
@@ -215,13 +224,12 @@ _V_.GPlusButton = _V_.SocialButton.extend({
             ['width','550'].join('='),
             ['height','550'].join('=')
         ].join();
-        //console.log('wparams',wparams);
+       //console.log('wparams',wparams, api + params);
         var popup = window.open(api + params, 'google', wparams);
         if(popup.focus){popup.focus()}
     }
 });
 
-_V_.options.components['rotateButton'] = {};
 _V_.RotateButton = _V_.Button.extend({
     init: function (player, options){
         var p = this._super(player, options);
@@ -240,7 +248,10 @@ _V_.RotateButton = _V_.Button.extend({
             return this._super(type, attrs);
         }
         
-        return;
+        
+        //var e = this._super(type, attrs);
+        //this.fadeout();
+        return document.createElement('span');
       
     },
     buildCSSClass: function(){
@@ -248,7 +259,7 @@ _V_.RotateButton = _V_.Button.extend({
     },
     clickCount: 0,
     onClick: function(){
-        console.log('rotate', this.player, this.player.techName, this.player.tech.el.localName, this.player.tech.el);
+        //console.log('rotate', this.player, this.player.techName, this.player.tech.el.localName, this.player.tech.el);
         
         //if(this.player.techName === "html5" ){
         if(this.player.tech.el.localName === 'video'){
